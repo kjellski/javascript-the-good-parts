@@ -13,12 +13,12 @@ var methodInvocationPattern = {
 	}
 };
 
-console.info("methodInvocationPattern");
-console.log("value: " + methodInvocationPattern.value);
+console.info("Method Invocation Pattern, page 28.");
+console.log("\tmethodInvocationPattern.value: " + methodInvocationPattern.value);
 methodInvocationPattern.increment();
-console.log("value: " + methodInvocationPattern.value);
+console.log("\tmethodInvocationPattern.value: " + methodInvocationPattern.value);
 methodInvocationPattern.increment(2);
-console.log("value: " + methodInvocationPattern.value);
+console.log("\tmethodInvocationPattern.value: " + methodInvocationPattern.value);
 
 // #######################################################################################
 // The function invcation pattern is the one that is somewhat bad designed.
@@ -28,11 +28,11 @@ var functionInvocationPattern = {
 	value: 0,
 	sum: function () {
 		// this "this" is what we expect from the "Method Invocation Pattern"
-		console.log("inside sums this: ", this); 
+		console.log("\tinside sums this: ", this); 
 		var insideSumFunction = function (argsOfSum) {
 			// this "this" is the design error, it's not bound to the outer
 			// closure, it's bound to the global object: "[object global]"
-			console.log("inside innersums this: " + this);
+			console.log("\tinside innersums this: " + this);
 			var result = 0;
 			for (var i = argsOfSum.length - 1; i >= 0; i--) {
 				result += argsOfSum[i];
@@ -44,7 +44,31 @@ var functionInvocationPattern = {
 	}
 };
 
-console.log("functionInvocationPattern");
-console.log("value: " + functionInvocationPattern.value);
+console.log("\nFunction Invocation Pattern, page 28.");
+console.log("\tfunctionInvocationPattern.value: " + functionInvocationPattern.value);
 functionInvocationPattern.sum(1,2,3,4,5);
-console.log("value: " + functionInvocationPattern.value);
+console.log("\tfunctionInvocationPattern.value: " + functionInvocationPattern.value);
+
+// #######################################################################################
+// this is the "Constructor Invocation Pattern", this shows how this is bound in 
+// prototypes and how they're instantiated.
+var ConstructorInvocationPattern = function (number) {
+    // this "this" is bound to global, unless you'll invoke the new constructor and 
+    // retrieve it with the get_value function
+    console.log("\tConstructorInvocationPatterns this: " + this);
+    this.value = typeof number === 'number' ? number : 1;
+}
+
+ConstructorInvocationPattern.prototype.get_value = function() {
+    return this.value;
+}
+
+// instantiate a prototype, this will show that the this is now
+// bound to the object instantiated
+console.log("\nConstructor Invocation Pattern, page 29.");
+// show global when not invoked from the prototype instance
+var withoutNew = ConstructorInvocationPattern(1);
+console.log("\twithoutNew is undefined, new was not used: " + withoutNew);
+
+var object = new ConstructorInvocationPattern(2);
+console.log("\tvalue: " + object.get_value());
